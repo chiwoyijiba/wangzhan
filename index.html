@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智卜文韵 - 生辰录入</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: #3498db;
+            margin: 10px auto 0;
+            border-radius: 3px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            background: white;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">智卜文韵</h1>
+        <h3 style="text-align: center; color: #7f8c8d; margin-bottom: 30px;">AI+传统易学文化数字化体验平台</h3>
+
+        <div class="form-group">
+            <label for="birth-date">请输入您的出生日期</label>
+            <input type="date" id="birth-date" required>
+        </div>
+
+        <button class="btn" onclick="generateBirthChart()">生成生辰八字</button>
+
+        <div class="footer">
+            © 2025 智卜文韵 - 传统易学文化数字化体验
+        </div>
+    </div>
+
+    <script>
+        // 模拟生辰八字生成逻辑（纯前端）
+        function generateBirthChart() {
+            const birthDate = document.getElementById('birth-date').value;
+
+            if (!birthDate) {
+                alert('请输入您的出生日期！');
+                return;
+            }
+
+            // 解析日期并生成模拟的生辰八字
+            const date = new Date(birthDate);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+
+            // 模拟生辰八字生成（纯前端逻辑，无后端依赖）
+            const tianGan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+            const diZhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+
+            // 基于日期计算（模拟易学规则）
+            const yearTG = tianGan[year % 10];
+            const yearDZ = diZhi[year % 12];
+            const monthTG = tianGan[month % 10];
+            const monthDZ = diZhi[month % 12];
+            const dayTG = tianGan[day % 10];
+            const dayDZ = diZhi[day % 12];
+            const hourTG = tianGan[Math.floor(Math.random() * 10)];
+            const hourDZ = diZhi[Math.floor(Math.random() * 12)];
+
+            const birthChart = `${yearTG}${yearDZ} ${monthTG}${monthDZ} ${dayTG}${dayDZ} ${hourTG}${hourDZ}`;
+
+            // 跳转到页面2，携带生辰参数（本地路径修复：添加./）
+            window.location.href = `./fortune-select.html?birth=${encodeURIComponent(birthChart)}&date=${encodeURIComponent(birthDate)}`;
+        }
+    </script>
+</body>
+</html>

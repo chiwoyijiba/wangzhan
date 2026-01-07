@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智卜文韵 - 10年运势分析</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            color: #2c3e50;
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #7f8c8d;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #34495e;
+        }
+
+        .result-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .trend-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 4px solid #e74c3c;
+        }
+
+        .trend-year {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .trend-content {
+            color: #555;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .opportunity-box {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0f8fb 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            border: 1px solid #dee2e6;
+        }
+
+        .opportunity-title {
+            color: #2980b9;
+            font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .opportunity-list {
+            list-style: none;
+        }
+
+        .opportunity-list li {
+            padding: 8px 0;
+            color: #34495e;
+            line-height: 1.6;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .opportunity-list li::before {
+            content: "✨";
+            position: absolute;
+            left: 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn {
+            background: #f1f1f1;
+            color: #34495e;
+        }
+
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+
+        .reselect-btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+
+        .reselect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 0;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">10年运势分析报告</h1>
+            <div class="subtitle" id="fortune-type">加载中...</div>
+        </div>
+
+        <div class="info-card">
+            <div class="info-item"><strong>生辰八字：</strong> <span id="birth-chart">加载中...</span></div>
+            <div class="info-item"><strong>出生日期：</strong> <span id="birth-date">加载中...</span></div>
+            <div class="info-item"><strong>分析时间：</strong> <span id="analysis-time"></span></div>
+        </div>
+
+        <div id="loading" class="loading">
+            正在为您生成专属运势分析...
+        </div>
+
+        <div id="result-content" style="display: none;">
+            <div class="result-section">
+                <h2 class="section-title">10年发展趋势</h2>
+                <div id="trend-content"></div>
+            </div>
+
+            <div class="opportunity-box">
+                <h3 class="opportunity-title">关键机遇提示</h3>
+                <ul class="opportunity-list" id="opportunity-list"></ul>
+            </div>
+
+            <div class="btn-group">
+                <!-- 修复按钮链接：添加./ -->
+                <a href="./fortune-select.html" class="action-btn reselect-btn">重新选择维度</a>
+                <a href="./index.html" class="action-btn back-btn">返回首页</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            © 2025 智卜文韵 - 传统易学文化数字化体验 | 本分析仅为模拟展示，不构成任何决策建议
+        </div>
+    </div>
+
+    <script>
+        // 获取URL参数
+        function getUrlParam(name) {
+            const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+            const r = window.location.search.substr(1).match(reg);
+            return r ? decodeURIComponent(r[2]) : '';
+        }
+
+        // 模拟AI生成的运势数据（纯前端，无接口依赖）
+        const fortuneData = {
+            love: {
+                name: "爱情运势",
+                trends: [
+                    { year: "2025", content: "本年感情运势平稳，有新的桃花机会出现，多参加社交活动易遇到合眼缘的人，需主动把握但不宜过于急躁。" },
+                    { year: "2026", content: "感情进入上升期，已有伴侣者关系更加稳固，单身者有望确定恋爱关系，注意沟通方式，避免因小事产生误会。" },
+                    { year: "2027", content: "本年易有感情波动，需注意情绪管理，避免冲动决策，已婚者需多陪伴家人，增进情感联结。" },
+                    { year: "2028", content: "爱情运势大好，适合求婚、订婚等人生大事，人际关系和谐，感情生活充满甜蜜，是收获幸福的一年。" },
+                    { year: "2029", content: "感情进入稳定期，彼此理解加深，但也容易进入平淡期，可尝试新鲜事物增进情趣，避免关系僵化。" },
+                    { year: "2030", content: "本年需注意沟通问题，易因观念差异产生分歧，学会换位思考，多倾听对方想法，可化解矛盾。" },
+                    { year: "2031", content: "桃花运势旺盛，身边会出现欣赏你的人，需保持清醒，明确自己的感情需求，避免陷入三角关系。" },
+                    { year: "2032", content: "感情运势回升，之前的矛盾逐渐化解，彼此更加珍惜对方，适合共同规划未来，奠定长久的感情基础。" },
+                    { year: "2033", content: "本年感情生活顺遂，家庭氛围和睦，已婚者易有添丁之喜，单身者也能遇到良缘，是充满喜悦的一年。" },
+                    { year: "2034", content: "十年感情运势收官之年，关系更加成熟稳定，学会包容与理解，感情进入新的阶段，未来可期。" }
+                ],
+                opportunities: [
+                    "2026年春季是结识良缘的最佳时机，可多参加朋友聚会、文化活动",
+                    "2028年适合确定终身大事，农历八月是求婚/订婚的吉时",
+                    "2031年可通过兴趣爱好拓展社交圈，增加遇见知音的概率",
+                    "2033年家庭运势极佳，适合置业安家，稳固感情基础",
+                    "十年中2025、2028、2033为感情关键年份，需重点把握"
+                ]
+            },
+            career: {
+                name: "事业运势",
+                trends: [
+                    { year: "2025", content: "本年事业起步阶段，适合学习新技能，积累工作经验，虽无大的晋升机会，但为后续发展奠定基础。" },
+                    { year: "2026", content: "事业迎来转机，有新的工作机会或项目合作，展现个人能力的好时机，抓住机会可获得领导赏识。" },
+                    { year: "2027", content: "工作压力增大，易遇到挑战和困难，需保持耐心，稳扎稳打，避免急功近利导致失误。" },
+                    { year: "2028", content: "事业上升期，有晋升或加薪机会，贵人相助明显，可主动争取重要项目，展现管理能力。" },
+                    { year: "2029", content: "本年适合拓展业务领域，尝试新的工作模式，跨界发展会有意外收获，注意团队协作。" },
+                    { year: "2030", content: "事业进入调整期，需重新规划职业方向，反思过往经验，为下一阶段发展做好准备。" },
+                    { year: "2031", content: "工作运势回升，有创业或跳槽的好机会，行业发展前景良好，适合做出重要职业决策。" },
+                    { year: "2032", content: "事业稳定发展，专业能力得到认可，可成为团队核心人物，注意劳逸结合，避免过度劳累。" },
+                    { year: "2033", content: "本年易有职务提升，管理能力得到发挥，可带领团队取得显著成绩，获得行业内的认可。" },
+                    { year: "2034", content: "十年事业发展收官，达到职业高峰，可考虑转型或培养新人，为长远发展布局。" }
+                ],
+                opportunities: [
+                    "2026年下半年有重要项目机会，主动争取可提升职业地位",
+                    "2028年是晋升关键年，农历三月、九月易有贵人提携",
+                    "2031年适合创业或更换赛道，新兴行业机会更多",
+                    "2033年可考取专业证书，提升行业竞争力",
+                    "十年中2026、2028、2031为事业突破的关键节点"
+                ]
+            },
+            noble: {
+                name: "贵人运势",
+                trends: [
+                    { year: "2025", content: "本年贵人运初显，身边会出现愿意帮助你的人，多为长辈或前辈，虚心请教可获得宝贵经验。" },
+                    { year: "2026", content: "贵人运势上升，工作中会遇到赏识你的领导，生活中也有朋友相助，懂得感恩可增进人际关系。" },
+                    { year: "2027", content: "贵人运稍弱，需主动拓展人脉，参加行业交流活动，不要闭门造车，主动出击才能获得帮助。" },
+                    { year: "2028", content: "贵人运旺盛，会遇到人生中的重要贵人，在关键时刻给予支持和指引，改变发展轨迹。" },
+                    { year: "2029", content: "贵人运平稳，人际关系和谐，身边的朋友、同事都能成为助力，保持良好的沟通很重要。" },
+                    { year: "2030", content: "本年易遇到志同道合的合作伙伴，贵人多来自同辈，合作共赢可实现资源互补，共同发展。" },
+                    { year: "2031", content: "贵人运回升，有机会认识行业大咖或领域专家，抓住交流机会，可获得重要的资源和信息。" },
+                    { year: "2032", content: "贵人运稳定，之前积累的人脉开始发挥作用，他人的推荐和介绍会带来新的发展机会。" },
+                    { year: "2033", content: "本年贵人运极佳，不仅得到他人帮助，自己也成为别人的贵人，形成良性的人际循环。" },
+                    { year: "2034", content: "十年贵人运收官，人脉资源丰富，成为行业内有影响力的人，懂得回馈才能长久发展。" }
+                ],
+                opportunities: [
+                    "2026年多参加行业论坛、培训活动，易结识职场贵人",
+                    "2028年农历五月、十一月易遇重要贵人，需保持开放的心态",
+                    "2030年适合拓展跨行业人脉，不同领域的贵人会带来新机遇",
+                    "2033年可成立自己的社交圈，整合资源实现共赢",
+                    "十年中2026、2028、2033为贵人运最强的年份，需积极把握"
+                ]
+            }
+        };
+
+        // 页面加载完成后生成模拟分析结果
+        window.onload = function() {
+            // 获取参数
+            const birthChart = getUrlParam('birth');
+            const birthDate = getUrlParam('date');
+            const fortuneType = getUrlParam('type');
+
+            // 验证参数
+            if (!birthChart || !birthDate || !fortuneType || !fortuneData[fortuneType]) {
+                alert('参数异常，请重新开始！');
+                window.location.href = './index.html'; // 修复返回路径
+                return;
+            }
+
+            // 填充基础信息
+            document.getElementById('birth-chart').textContent = birthChart;
+            document.getElementById('birth-date').textContent = birthDate;
+            document.getElementById('fortune-type').textContent = fortuneData[fortuneType].name;
+
+            // 设置分析时间
+            const now = new Date();
+            document.getElementById('analysis-time').textContent = now.toLocaleString('zh-CN');
+
+            // 模拟加载效果
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result-content').style.display = 'block';
+
+                // 生成运势趋势内容
+                const trendContainer = document.getElementById('trend-content');
+                fortuneData[fortuneType].trends.forEach(trend => {
+                    const trendItem = document.createElement('div');
+                    trendItem.className = 'trend-item';
+                    trendItem.innerHTML = `
+                        <div class="trend-year">${trend.year}年</div>
+                        <div class="trend-content">${trend.content}</div>
+                    `;
+                    trendContainer.appendChild(trendItem);
+                });
+
+                // 生成关键机遇内容
+                const opportunityList = document.getElementById('opportunity-list');
+                fortuneData[fortuneType].opportunities.forEach(opportunity => {
+                    const li = document.createElement('li');
+                    li.textContent = opportunity;
+                    opportunityList.appendChild(li);
+                });
+
+            }, 2000); // 2秒加载动画
+        }
+    </script>
+</body>
+</html>

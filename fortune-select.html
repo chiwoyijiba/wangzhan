@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智卜文韵 - 运势维度选择</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .birth-info {
+            text-align: center;
+            color: #34495e;
+            margin-bottom: 40px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .btn-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .fortune-btn {
+            padding: 25px 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fortune-btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.6s ease;
+        }
+        
+        .fortune-btn:hover::before {
+            left: 100%;
+        }
+        
+        .fortune-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .love-btn {
+            background: linear-gradient(135deg, #e84393, #d63031);
+        }
+        
+        .career-btn {
+            background: linear-gradient(135deg, #27ae60, #219653);
+        }
+        
+        .noble-btn {
+            background: linear-gradient(135deg, #2980b9, #1e3799);
+        }
+        
+        .icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+        
+        .back-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: #f1f1f1;
+            color: #34495e;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: #e0e0e0;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">选择运势维度</h1>
+        
+        <div class="birth-info" id="birth-info">
+            <strong>您的生辰八字：</strong>
+            <span id="birth-chart">加载中...</span>
+        </div>
+        
+        <div class="btn-group">
+            <button class="fortune-btn love-btn" onclick="selectFortune('love')">
+                <span class="icon">❤️</span>
+                爱情运势
+            </button>
+            <button class="fortune-btn career-btn" onclick="selectFortune('career')">
+                <span class="icon">💼</span>
+                事业运势
+            </button>
+            <button class="fortune-btn noble-btn" onclick="selectFortune('noble')">
+                <span class="icon">🤝</span>
+                贵人运势
+            </button>
+        </div>
+        
+        <!-- 修复返回链接：改为./index.html -->
+        <a href="./index.html" class="back-btn">返回重新输入</a>
+
+        <div class="footer">
+            © 2025 智卜文韵 - 传统易学文化数字化体验
+        </div>
+    </div>
+
+    <script>
+        // 获取URL参数（纯前端）
+        function getUrlParam(name) {
+            const reg = new RegExp(`(^|&)${name}=([^&]*)(&|$)`);
+            const r = window.location.search.substr(1).match(reg);
+            return r ? decodeURIComponent(r[2]) : '';
+        }
+
+        // 页面加载时显示生辰八字
+        window.onload = function() {
+            const birthChart = getUrlParam('birth');
+            const birthDate = getUrlParam('date');
+
+            if (!birthChart) {
+                alert('未检测到生辰信息，请重新输入！');
+                window.location.href = './index.html'; // 修复返回路径
+                return;
+            }
+
+            document.getElementById('birth-chart').textContent = birthChart;
+        }
+
+        // 选择运势维度并跳转（修复路径：添加./）
+        function selectFortune(type) {
+            const birthChart = getUrlParam('birth');
+            const birthDate = getUrlParam('date');
+
+            window.location.href = `./fortune-result.html?birth=${encodeURIComponent(birthChart)}&date=${encodeURIComponent(birthDate)}&type=${type}`;
+        }
+    </script>
+</body>
+</html>
